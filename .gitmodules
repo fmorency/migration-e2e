@@ -1,0 +1,21 @@
+[submodule "talib"]
+	path = talib
+	url = https://github.com/fmorency/talib.git
+	branch = fix-db-lock
+[submodule "mfx-migrator"]
+	path = mfx-migrator
+	url = https://github.com/fmorency/mfx-migrator.git
+	branch = parallel-claim
+[submodule "alberto"]
+	path = alberto
+	url = https://github.com/fmorency/alberto.git
+	branch = token-migration
+[submodule "many-cluster"]
+	path = many-cluster
+	url = https://github.com/fmorency/many-cluster.git
+[submodule "manifest-ledger"]
+	path = manifest-ledger
+	url = https://github.com/liftedinit/manifest-ledger.git
+[submodule "many-rs"]
+	path = many-rs
+	url = https://github.com/liftedinit/many-rs.git
