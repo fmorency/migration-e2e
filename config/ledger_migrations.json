@@ -1,0 +1,39 @@
+{ "migrations": [
+  {
+    "name": "Account Count Data Attribute",
+    "block_height": 0,
+    "issue": "https://github.com/liftedinit/many-framework/issues/190"
+  },
+  {
+    "name": "Block 9400",
+    "block_height": 0,
+    "disabled": true
+  },
+  {
+    "name": "Memo Migration",
+    "block_height": 0
+  },
+  {
+    "name": "Token Migration",
+    "block_height": 0,
+    "token_identity": "maffbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wijp",
+    "token_next_subresource": 2,
+    "symbol": "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz",
+    "symbol_name": "Manifest Network Token",
+    "symbol_decimals": 9,
+    "symbol_total": 100000000000000000,
+    "symbol_circulating": 100000000000000000,
+    "symbol_maximum": null,
+    "symbol_owner": "maffbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wijp"
+  },
+  {
+    "name": "Token Create Migration",
+    "block_height": 0
+  },
+  {
+    "name": "LegacyRemoveRoles",
+    "block_height": 0,
+    "upper_block_height": 0,
+    "disabled": true
+  }
+] }
