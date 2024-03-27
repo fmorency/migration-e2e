@@ -1,0 +1,21 @@
+{
+    "url": "http://talib:3000/api/v1/",
+    "neighborhood": 1,
+    "username": "admin",
+    "password": "admin",
+    "logLevel": "info",
+    "chain-id": "test-1",
+    "address-prefix": "manifest",
+    "node-address": "http://manifest-ledger:26657",
+    "keyring-backend": "test",
+    "bank-address": "user1",
+    "chain-home": "/manifest-ledger-data/.manifest",
+    "wait-for-tx-timeout": 60,
+    "wait-for-block-timeout": 60,
+    "token-map": {
+        "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz": {
+            "denom": "umfx",
+            "precision": 6
+        }
+    }
+}

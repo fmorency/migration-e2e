@@ -32,6 +32,18 @@ services:
     ports:
       - "3000:3000"
 
+  migrator:
+    build:
+      context: ./mfx-migrator
+      dockerfile: Dockerfile
+    volumes:
+      - migrator-jobs:/jobs
+      - manifest-ledger-data:/manifest-ledger-data # Give the migrator access to the chain keyring
+      - ./config/migrator-config.json:/config/migrator-config.json
+    depends_on:
+      - manifest-ledger
+      - talib
+
   tendermint:
     image: tendermint/tendermint:v0.34.24
     ports:
@@ -85,13 +97,13 @@ services:
                update_test_genesis '.app_state[\"mint\"][\"params\"][\"mint_denom\"]=\"$DENOM\"' &&
                update_test_genesis '.app_state[\"mint\"][\"params\"][\"blocks_per_year\"]=\"6311520\"' &&
                update_test_genesis '.app_state[\"tokenfactory\"][\"params\"][\"denom_creation_fee\"]=[]' &&
-               update_test_genesis '.app_state[\"tokenfactory\"][\"params\"][\"denom_creation_gas_consume\"]=2000000' &&
+               update_test_genesis '.app_state[\"tokenfactory\"][\"params\"][\"denom_creation_gas_consume\"]=0' &&
                update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"mint_denom\"]=\"$DENOM\"' &&
-               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"yearly_amount\"]=\"500000000000\"' &&
-               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"automatic_enabled\"]=true' &&
+               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"yearly_amount\"]=\"0\"' &&
+               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"automatic_enabled\"]=false' &&
                update_test_genesis '.app_state[\"manifest\"][\"params\"][\"stake_holders\"]=[{\"address\":\"manifest1hj5fveer5cjtn4wd6wstzugjfdxzl0xp8ws9ct\",\"percentage\":100000000}]' &&
-               $BINARY genesis add-genesis-account $KEY 1000000${BOND_DENOM},10000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
-               $BINARY genesis add-genesis-account $KEY2 100000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
+               $BINARY genesis add-genesis-account $KEY 1000000000000000${BOND_DENOM},10000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
+               $BINARY genesis add-genesis-account $KEY2 100000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
                $BINARY genesis gentx $KEY 1000000${BOND_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR --chain-id $CHAIN_ID --commission-rate=0.0 --commission-max-rate=1.0 --commission-max-change-rate=0.1 &&
                $BINARY genesis collect-gentxs --home=$HOME_DIR &&
                $BINARY genesis validate-genesis --home=$HOME_DIR &&
@@ -108,9 +120,9 @@ services:
                $BINARY start --home=${HOME_DIR} --pruning=nothing  --minimum-gas-prices=0${DENOM} --rpc.laddr=\"tcp://0.0.0.0:$RPC\"
                "]
 
-
 volumes:
   tm-data:
   many-abci-data:
   many-ledger-data:
   manifest-ledger-data:
+  migrator-jobs:
