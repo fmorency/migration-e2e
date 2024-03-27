@@ -48,8 +48,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-        - abci-data:/persistent
-        - abci-data:/genfiles
+        - many-abci-data:/persistent
+        - many-abci-data:/genfiles
         - ./config/abci.pem:/genfiles/abci.pem
     entrypoint: ["/bin/bash", "-c"]
     command: ["/app/src/many-abci/many-abci-image_binary --many 0.0.0.0:8000 --many-app http://many-ledger:8000 --many-pem /genfiles/abci.pem  --abci 0.0.0.0:26658 --cache-db /persistent/abci_request_cache.db --tendermint http://tendermint:26657"]
@@ -57,8 +57,8 @@ services:
   many-ledger:
     image: lifted/many-ledger:nightly
     volumes:
-        - ledger-data:/persistent
-        - ledger-data:/genfiles
+        - many-ledger-data:/persistent
+        - many-ledger-data:/genfiles
         - ./config/ledger_state.json5:/genfiles/ledger_state.json5
         - ./config/ledger_migrations.json:/genfiles/ledger_migrations.json
         - ./config/ledger.pem:/genfiles/ledger.pem
@@ -105,12 +105,12 @@ services:
                sed -i 's/address = \"localhost:9091\"/address = \"0.0.0.0:'$GRPC_WEB'\"/g' $HOME_DIR/config/app.toml &&
                sed -i 's/address = \":8080\"/address = \"0.0.0.0:'$ROSETTA'\"/g' $HOME_DIR/config/app.toml &&
                sed -i 's/timeout_commit = \"5s\"/timeout_commit = \"'$TIMEOUT_COMMIT'\"/g' $HOME_DIR/config/config.toml &&
-               POA_ADMIN_ADDRESS=$POA_ADMIN_ADDRESS $BINARY start --home=${HOME_DIR} --pruning=nothing  --minimum-gas-prices=0${DENOM} --rpc.laddr=\"tcp://0.0.0.0:$RPC\"
+               $BINARY start --home=${HOME_DIR} --pruning=nothing  --minimum-gas-prices=0${DENOM} --rpc.laddr=\"tcp://0.0.0.0:$RPC\"
                "]
 
 
 volumes:
   tm-data:
-  abci-data:
-  ledger-data:
+  many-abci-data:
+  many-ledger-data:
   manifest-ledger-data:
