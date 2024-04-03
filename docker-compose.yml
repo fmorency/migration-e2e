@@ -44,6 +44,18 @@ services:
       - manifest-ledger
       - talib
 
+  migrator-2:
+    build:
+      context: ./mfx-migrator
+      dockerfile: Dockerfile
+    volumes:
+      - migrator-2-jobs:/jobs
+      - manifest-ledger-data:/manifest-ledger-data # Give the migrator access to the chain keyring
+      - ./config/migrator-config-2.json:/config/migrator-config.json
+    depends_on:
+      - manifest-ledger
+      - talib
+
   tendermint:
     image: tendermint/tendermint:v0.34.24
     ports:
@@ -126,3 +138,4 @@ volumes:
   many-ledger-data:
   manifest-ledger-data:
   migrator-jobs:
+  migrator-2-jobs:
