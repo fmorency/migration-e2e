@@ -20,7 +20,8 @@ The infrastructure consists of
 
 ## Usage
 
-To start the instance for local dev simply run `make start`.
+Build the images with `make build`. Then, start the instances with `make start`.
+
 To stop the instance and remove the containers and volumes, run `make stop`.
 
-DO NOT run `docker compose up` directly.
+DO NOT use `docker compose` directly.

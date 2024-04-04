@@ -1,12 +1,25 @@
 start: docker-up create-neiborhood
 
+set-alberto-talib:
+	@echo "Setting Alberto Talib URL" # Set the Talib URL to the dockerized Talib
+	@sed -i 's/REACT_APP_TALIB_URL=.*/REACT_APP_TALIB_URL="http\:\/\/localhost\:3001\/api\/v1\/neighborhoods\/1\/"/g' ./alberto/.env
+	@sed -i 's/REACT_APP_TALIB_URL=.*/REACT_APP_TALIB_URL="http\:\/\/localhost\:3001\/api\/v1\/neighborhoods\/1\/"/g' ./alberto/.env.staging
+
 set-alberto-proxy:
-	@echo "Setting Alberto proxy"
+	@echo "Setting Alberto proxy" # Set the proxy to the dockerized ABCI
 	@sed -i 's/"proxy"\:.*/"proxy"\: "http\:\/\/many-abci\:8000"/g' ./alberto/package.json
 
-docker-up: set-alberto-proxy
+set-alberto-http:
+	@echo "Disabling HTTPS in Alberto" # This is needed for loading mixed active content
+	@sed -i 's/HTTPS=.*/HTTPS=false/g' ./alberto/.env
+
+docker-up: set-alberto-proxy set-alberto-talib set-alberto-http talib-enable-cors
 	@echo "Setting up e2e infra"
 	@docker compose up -d --wait
+
+talib-enable-cors:
+	@echo "Enabling CORS in Talib"
+	@cd talib && git apply ../patch/talib-enable-cors.patch && cd -
 
 .ONESHELL:
 create-neiborhood: docker-up
@@ -30,4 +43,8 @@ stop:
 	@echo "Tearing down e2e infra"
 	@docker compose down -v
 
-.PHONY: start stop create-neiborhood set-alberto-proxy docker-up
+build: set-alberto-proxy set-alberto-talib set-alberto-http talib-enable-cors
+	@echo "Building e2e infra"
+	@docker compose build
+
+.PHONY: start stop create-neiborhood set-alberto-proxy set-alberto-talib docker-up build talib-enable-cors
