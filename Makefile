@@ -43,8 +43,14 @@ stop:
 	@echo "Tearing down e2e infra"
 	@docker compose down -v
 
-build: set-alberto-proxy set-alberto-talib set-alberto-http talib-enable-cors
+build: clean set-alberto-proxy set-alberto-talib set-alberto-http talib-enable-cors
 	@echo "Building e2e infra"
 	@docker compose build
 
-.PHONY: start stop create-neiborhood set-alberto-proxy set-alberto-talib docker-up build talib-enable-cors
+clean:
+	@echo "Cleaning up e2e infra"
+	@docker compose down -v
+	@cd alberto && rm -rf node_modules && git reset --hard HEAD && cd -
+	@cd talib && git reset --hard HEAD && cd -
+
+.PHONY: start stop create-neiborhood set-alberto-proxy set-alberto-talib docker-up build talib-enable-cors clean
