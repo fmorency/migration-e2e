@@ -114,8 +114,8 @@ services:
                update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"yearly_amount\"]=\"0\"' &&
                update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"automatic_enabled\"]=false' &&
                update_test_genesis '.app_state[\"manifest\"][\"params\"][\"stake_holders\"]=[{\"address\":\"manifest1hj5fveer5cjtn4wd6wstzugjfdxzl0xp8ws9ct\",\"percentage\":100000000}]' &&
-               $BINARY genesis add-genesis-account $KEY 1000000000000000${BOND_DENOM},10000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
-               $BINARY genesis add-genesis-account $KEY2 100000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
+               $BINARY genesis add-genesis-account $KEY 100000000000000000${BOND_DENOM},100000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
+               $BINARY genesis add-genesis-account $KEY2 100000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
                $BINARY genesis gentx $KEY 1000000${BOND_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR --chain-id $CHAIN_ID --commission-rate=0.0 --commission-max-rate=1.0 --commission-max-change-rate=0.1 &&
                $BINARY genesis collect-gentxs --home=$HOME_DIR &&
                $BINARY genesis validate-genesis --home=$HOME_DIR &&
