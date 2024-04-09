@@ -14,8 +14,7 @@
     "wait-for-block-timeout": 60,
     "token-map": {
         "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz": {
-            "denom": "umfx",
-            "precision": 6
+            "denom": "umfx"
         }
     }
 }
