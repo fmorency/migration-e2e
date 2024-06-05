@@ -40,6 +40,12 @@ services:
       - migrator-jobs:/jobs
       - manifest-ledger-data:/manifest-ledger-data # Give the migrator access to the chain keyring
       - ./config/migrator-config.json:/config/migrator-config.json
+      - type: volume
+        source: manifest-ledger-bin
+        target: /usr/bin/manifestd
+        volume:
+          nocopy: true
+          subpath: manifestd
     depends_on:
       - manifest-ledger
       - talib
@@ -52,6 +58,12 @@ services:
       - migrator-2-jobs:/jobs
       - manifest-ledger-data:/manifest-ledger-data # Give the migrator access to the chain keyring
       - ./config/migrator-config-2.json:/config/migrator-config.json
+      - type: volume
+        source: manifest-ledger-bin
+        target: /usr/bin/manifestd
+        volume:
+          nocopy: true
+          subpath: manifestd
     depends_on:
       - manifest-ledger
       - talib
@@ -92,6 +104,7 @@ services:
   manifest-ledger:
     image: ghcr.io/liftedinit/manifest-ledger:v0.0.1-alpha
     volumes:
+        - manifest-ledger-bin:/usr/bin
         - manifest-ledger-data:/persistent
     entrypoint: ["/bin/bash", "-c"]
     # I didn't use `local-ic` because I want to manage every service from the compose file.
@@ -110,10 +123,6 @@ services:
                update_test_genesis '.app_state[\"mint\"][\"params\"][\"blocks_per_year\"]=\"6311520\"' &&
                update_test_genesis '.app_state[\"tokenfactory\"][\"params\"][\"denom_creation_fee\"]=[]' &&
                update_test_genesis '.app_state[\"tokenfactory\"][\"params\"][\"denom_creation_gas_consume\"]=0' &&
-               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"mint_denom\"]=\"$DENOM\"' &&
-               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"yearly_amount\"]=\"0\"' &&
-               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"inflation\"][\"automatic_enabled\"]=false' &&
-               update_test_genesis '.app_state[\"manifest\"][\"params\"][\"stake_holders\"]=[{\"address\":\"manifest1hj5fveer5cjtn4wd6wstzugjfdxzl0xp8ws9ct\",\"percentage\":100000000}]' &&
                $BINARY genesis add-genesis-account $KEY 100000000000000000${BOND_DENOM},100000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
                $BINARY genesis add-genesis-account $KEY2 100000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
                $BINARY genesis gentx $KEY 1000000${BOND_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR --chain-id $CHAIN_ID --commission-rate=0.0 --commission-max-rate=1.0 --commission-max-change-rate=0.1 &&
@@ -136,6 +145,7 @@ volumes:
   tm-data:
   many-abci-data:
   many-ledger-data:
+  manifest-ledger-bin:
   manifest-ledger-data:
   migrator-jobs:
   migrator-2-jobs:
