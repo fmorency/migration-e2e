@@ -138,7 +138,7 @@ services:
                sed -i 's/address = \"localhost:9091\"/address = \"0.0.0.0:'$GRPC_WEB'\"/g' $HOME_DIR/config/app.toml &&
                sed -i 's/address = \":8080\"/address = \"0.0.0.0:'$ROSETTA'\"/g' $HOME_DIR/config/app.toml &&
                sed -i 's/timeout_commit = \"5s\"/timeout_commit = \"'$TIMEOUT_COMMIT'\"/g' $HOME_DIR/config/config.toml &&
-               $BINARY start --home=${HOME_DIR} --pruning=nothing  --minimum-gas-prices=0${DENOM} --rpc.laddr=\"tcp://0.0.0.0:$RPC\"
+               $BINARY start --home=${HOME_DIR} --pruning=nothing  --minimum-gas-prices=0.0011${DENOM} --rpc.laddr=\"tcp://0.0.0.0:$RPC\"
                "]
 
 volumes:

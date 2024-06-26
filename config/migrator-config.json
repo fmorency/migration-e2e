@@ -12,6 +12,9 @@
     "chain-home": "/manifest-ledger-data/.manifest",
     "wait-for-tx-timeout": 60,
     "wait-for-block-timeout": 60,
+    "gas-adjustment": 1.2,
+    "gas-prices": "0.0011",
+    "gas-denom": "umfx",
     "token-map": {
         "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz": {
             "denom": "umfx"
