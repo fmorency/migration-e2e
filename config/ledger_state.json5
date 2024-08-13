@@ -50,7 +50,8 @@
   // must match an existing symbol.
   initial: {
     "maffbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wijp": {
-      "MFX": "100_000_000__000_000_000__000_000_000"
+      "MFX": "100_000_000__000_000_000__000_000_000",
+      "SPDT": "100_000_000_000_000_000",
     },
     "magy3snzgryzxioaguoqvpx67oksagubxenin6jj23ng2zwq4k" : {
       "MFX": 100000000
@@ -68,7 +69,8 @@
   // ########################
   // List of symbols that this ledger supports.
   symbols: {
-    "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz": "MFX"
+    "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz": "MFX",
+    "mqbh742x4s356ddaryrxaowt4wxtlocekzpufodvowrirfrqaaabadn": "SPDT",
   },
 
   // ########################
@@ -81,6 +83,12 @@
   symbols_meta: {
    "mqbfbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wiaaaaqnz": {
      name: "Manifest Network Token",
+     decimals: 9,
+     owner: "maffbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wijp",
+     maximum: null,
+   },
+   "mqbh742x4s356ddaryrxaowt4wxtlocekzpufodvowrirfrqaaabadn": {
+     name: "SpaceData",
      decimals: 9,
      owner: "maffbahksdwaqeenayy2gxke32hgb7aq4ao4wt745lsfs6wijp",
      maximum: null,
