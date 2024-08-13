@@ -13,13 +13,13 @@ set-alberto-http:
 	@echo "Disabling HTTPS in Alberto" # This is needed for loading mixed active content
 	@sed -i 's/HTTPS=.*/HTTPS=false/g' ./alberto/.env
 
-docker-up: set-alberto-proxy set-alberto-talib set-alberto-http
+docker-up: set-alberto-proxy set-alberto-talib set-alberto-http talib-enable-cors
 	@echo "Setting up e2e infra"
 	@docker compose up -d --wait
 
 talib-enable-cors:
 	@echo "Enabling CORS in Talib"
-	@cd talib && git apply ../patch/talib-enable-cors.patch && cd -
+	@cd talib && if git apply -q --check ../patch/talib-enable-cors.patch; then git apply ../patch/talib-enable-cors.patch; else echo "CORS patch already applied, skipping"; fi && cd -
 
 .ONESHELL:
 create-neiborhood: docker-up
