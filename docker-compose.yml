@@ -50,23 +50,24 @@ services:
       - manifest-ledger
       - talib
 
-  migrator-2:
-    build:
-      context: ./mfx-migrator
-      dockerfile: Dockerfile
-    volumes:
-      - migrator-2-jobs:/jobs
-      - manifest-ledger-data:/manifest-ledger-data # Give the migrator access to the chain keyring
-      - ./config/migrator-config-2.json:/config/migrator-config.json
-      - type: volume
-        source: manifest-ledger-bin
-        target: /usr/bin/manifestd
-        volume:
-          nocopy: true
-          subpath: manifestd
-    depends_on:
-      - manifest-ledger
-      - talib
+# As a proof of concept, show how to run multiple migrators in parallel using different users.
+#  migrator-2:
+#    build:
+#      context: ./mfx-migrator
+#      dockerfile: Dockerfile
+#    volumes:
+#      - migrator-2-jobs:/jobs
+#      - manifest-ledger-data:/manifest-ledger-data # Give the migrator access to the chain keyring
+#      - ./config/migrator-config-2.json:/config/migrator-config.json
+#      - type: volume
+#        source: manifest-ledger-bin
+#        target: /usr/bin/manifestd
+#        volume:
+#          nocopy: true
+#          subpath: manifestd
+#    depends_on:
+#      - manifest-ledger
+#      - talib
 
   tendermint:
     image: tendermint/tendermint:v0.34.24
@@ -102,7 +103,7 @@ services:
     command: ["/app/src/many-ledger/many-ledger-image_binary --abci --state=/genfiles/ledger_state.json5 --pem=/genfiles/ledger.pem --persistent=/persistent/ledger.db --addr 0.0.0.0:8000 --migrations-config=/genfiles/ledger_migrations.json"]
 
   manifest-ledger:
-    image: ghcr.io/liftedinit/manifest-ledger:v0.0.1-alpha.10
+    image: ghcr.io/liftedinit/manifest-ledger:v0.0.1-alpha.16
     volumes:
         - manifest-ledger-bin:/usr/bin
         - manifest-ledger-data:/persistent
@@ -123,7 +124,8 @@ services:
                update_test_genesis '.app_state[\"mint\"][\"params\"][\"blocks_per_year\"]=\"6311520\"' &&
                update_test_genesis '.app_state[\"tokenfactory\"][\"params\"][\"denom_creation_fee\"]=[]' &&
                update_test_genesis '.app_state[\"tokenfactory\"][\"params\"][\"denom_creation_gas_consume\"]=0' &&
-               $BINARY genesis add-genesis-account $KEY 100000000000000000${BOND_DENOM},100000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
+               update_test_genesis '.app_state[\"feegrant\"][\"allowances\"]=[{\"granter\":\"${GAS_STATION_ADDR}\",\"grantee\":\"${BANK_ADDR}\",\"allowance\":{\"@type\":\"/cosmos.feegrant.v1beta1.AllowedMsgAllowance\",\"allowance\":{\"@type\":\"/cosmos.feegrant.v1beta1.BasicAllowance\",\"spend_limit\":[],\"expiration\":null},\"allowed_messages\":[\"/cosmos.bank.v1beta1.MsgSend\"]}}]' &&
+               $BINARY genesis add-genesis-account $KEY 100000000000000000${BOND_DENOM},100000000000000000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
                $BINARY genesis add-genesis-account $KEY2 100000000000000000${DENOM},1000${TEST_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR &&
                $BINARY genesis gentx $KEY 1000000${BOND_DENOM} --keyring-backend $KEYRING --home=$HOME_DIR --chain-id $CHAIN_ID --commission-rate=0.0 --commission-max-rate=1.0 --commission-max-change-rate=0.1 &&
                $BINARY genesis collect-gentxs --home=$HOME_DIR &&
@@ -148,4 +150,4 @@ volumes:
   manifest-ledger-bin:
   manifest-ledger-data:
   migrator-jobs:
-  migrator-2-jobs:
+#  migrator-2-jobs:
