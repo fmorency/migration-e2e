@@ -31,6 +31,14 @@
     "block_height": 0
   },
   {
+    "name": "Disable Token Mint Migration",
+    "block_height": 0
+  },
+  {
+    "name": "Disable Token Create Migration",
+    "block_height": 0
+  },
+  {
     "name": "LegacyRemoveRoles",
     "block_height": 0,
     "upper_block_height": 0,
